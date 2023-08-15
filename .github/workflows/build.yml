@@ -78,10 +78,10 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-          - name: Build clang
-          id: make_build_clang
-          run: |
-            make run CC=clang
+      - name: Build clang
+        id: make_build_clang
+        run: |
+          make run CC=clang
 
       - name: Build
         id: make_build
