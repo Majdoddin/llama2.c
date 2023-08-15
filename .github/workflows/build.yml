@@ -103,6 +103,7 @@ jobs:
     runs-on: windows-latest
 
     strategy:
+      fail-fast: false  #necessary, otherwise the matrix breaks 
       matrix:
         arch:
           - amd64
@@ -122,10 +123,25 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
 
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+  
+      - name: Pip setup
+        run: |
+          python -m pip install --upgrade pip
+          if (Test-Path requirements.txt) {
+            pip install -r requirements.txt
+          }
+
       - name: Build ${{ matrix.arch }}
         id: build_msvc
         run: |
           .\build_msvc.bat
+
+      - name: Test with pytest
+        run: pytest        
 
   windows-latest-mingw:
     runs-on: windows-latest
@@ -152,5 +168,9 @@ jobs:
 
       - name: Build ${{ matrix.sys }} ${{ matrix.env }}
         id: build_mingw
+        shell: powershell
         run: |
           make win64
+
+
+    
