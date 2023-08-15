@@ -47,15 +47,17 @@ def test_runc():
     model_path = os.path.join(test_ckpt_dir, "stories260K.bin")
     tokenizer_path = os.path.join(test_ckpt_dir, "tok512.bin")
     command = ["./run", model_path, "-z", tokenizer_path, "-t", "0.0", "-n", "200"]
-    with open('output.txt', mode='w') as f:
-        proc = subprocess.Popen(command, stdout=f, stderr=subprocess.DEVNULL)
-        proc.wait()
-        #stdout, stderr = proc.communicate()
-
+    
+    with open('err.txt', mode='wb') as fe:  
+        with open('stdout.txt', mode='wb') as fo:
+            proc = subprocess.Popen(command, stdout=fo, stderr=fe)  #pipe in windows terminal does funny things like replacing \n with \r\n
+            proc.wait()
+                
+    with open('stdout.txt', mode='r') as f:
+        stdout = f.read()
     # strip the very last \n that is added by run.c for aesthetic reasons
-    with open('output.txt', mode='rb') as f:
-        stdout = f.read
-    #stdout = stdout[:-1].encode('ascii')
+    stdout = stdout[:-1].encode('ascii')
+    
     assert stdout == expected_stdout
 
 def test_python():
@@ -86,3 +88,5 @@ def test_python():
     text = text.encode('ascii') # turn into bytes
 
     assert text == expected_stdout
+
+test_runc()
