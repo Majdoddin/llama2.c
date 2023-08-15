@@ -4,6 +4,7 @@ $ pytest
 """
 import os
 import pytest # pip install pytest
+from urllib.parse import urljoin
 import requests
 import subprocess
 
@@ -30,7 +31,7 @@ def attempt_download_files():
     root_url = "https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K"
     need = ["stories260K.bin", "stories260K.pt", "tok512.bin", "tok512.model"]
     for file in need:
-        url = os.path.join(root_url, file)
+        url = urljoin(root_url, file)   #urljoin is cross-platform
         filename = os.path.join(test_ckpt_dir, file)
         if not os.path.exists(filename):
             download_file(url, filename)
