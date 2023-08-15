@@ -47,13 +47,16 @@ def test_runc():
     model_path = os.path.join(test_ckpt_dir, "stories260K.bin")
     tokenizer_path = os.path.join(test_ckpt_dir, "tok512.bin")
     command = ["./run", model_path, "-z", tokenizer_path, "-t", "0.0", "-n", "200"]
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    stdout, stderr = proc.communicate()
+    with open('output.txt', mode='w') as f:
+        proc = subprocess.Popen(command, stdout=f)
+        proc.wait()
+        #stdout, stderr = proc.communicate()
 
     # strip the very last \n that is added by run.c for aesthetic reasons
-    stdout = stdout[:-1]
-    assert stdout == expected_stdout
+    with open('output.txt', mode='rb', encoding='utf-8') as f:
+        stdout = f.read
+    #stdout = stdout[:-1].encode('ascii')
+    assert stdout.bytes() == expected_stdout
 
 def test_python():
     """ Forwards a model against a known-good desired outcome in sample.py for 200 steps"""
