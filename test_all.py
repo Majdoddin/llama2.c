@@ -47,10 +47,10 @@ def test_runc():
     model_path = os.path.join(test_ckpt_dir, "stories260K.bin")
     tokenizer_path = os.path.join(test_ckpt_dir, "tok512.bin")
     command = ["./run", model_path, "-z", tokenizer_path, "-t", "0.0", "-n", "200"]
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=False)
 
     stdout, stderr = proc.communicate()
-
+    stdout = stdout.decode('utf-8').encode('ascii')
     # strip the very last \n that is added by run.c for aesthetic reasons
     stdout = stdout[:-1]
     assert stdout == expected_stdout
