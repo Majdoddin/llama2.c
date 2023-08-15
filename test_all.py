@@ -30,7 +30,7 @@ def attempt_download_files():
     root_url = "https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K"
     need = ["stories260K.bin", "stories260K.pt", "tok512.bin", "tok512.model"]
     for file in need:
-        url = '/'.join(root_url, file)   #os.path.join inserts \\ on windows 
+        url = root_url + '/' + file   #os.path.join inserts \\ on windows 
         filename = os.path.join(test_ckpt_dir, file)
         if not os.path.exists(filename):
             download_file(url, filename)
