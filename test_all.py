@@ -47,7 +47,7 @@ def test_runc():
     model_path = os.path.join(test_ckpt_dir, "stories260K.bin")
     tokenizer_path = os.path.join(test_ckpt_dir, "tok512.bin")
     command = ["./run", model_path, "-z", tokenizer_path, "-t", "0.0", "-n", "200"]
-    with open('output.txt', 'wb') as file:
+    with open('output.txt', 'a+b') as file:
         # Create a Popen object with the program and arguments
         proc = subprocess.Popen(command, stdout=file, stderr=subprocess.PIPE, text=False)
 
