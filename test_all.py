@@ -53,7 +53,7 @@ def test_runc():
         #stdout, stderr = proc.communicate()
 
     # strip the very last \n that is added by run.c for aesthetic reasons
-    with open('output.txt', mode='rb', encoding='utf-8') as f:
+    with open('output.txt', mode='rb') as f:
         stdout = f.read
     #stdout = stdout[:-1].encode('ascii')
     assert stdout.bytes() == expected_stdout
