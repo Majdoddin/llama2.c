@@ -56,7 +56,7 @@ def test_runc():
     with open('output.txt', mode='rb') as f:
         stdout = f.read
     #stdout = stdout[:-1].encode('ascii')
-    assert stdout.bytes() == expected_stdout
+    assert stdout == expected_stdout
 
 def test_python():
     """ Forwards a model against a known-good desired outcome in sample.py for 200 steps"""
